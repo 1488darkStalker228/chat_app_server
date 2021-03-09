@@ -27,28 +27,19 @@ io.on('connection', (socket) => {
   console.log('socket connected...', socket.id);
 
   socket.on('chat-message', (data) => {
-
     socket.broadcast.emit('chat-message', data);
   });
 
   socket.on('JOINED', (data) => {
-    usersStore.push({
-      id: socket.id,
-      userName: data.userName
-    });
-    //Нужен один из представленных ниже вариантов;
-    socket.emit('JOINED', usersStore);
-    // console.log(usersStore)
+    usersStore.push(data);
+    io.emit('JOINED', usersStore);
   });
-
+  /*
   socket.on('disconnect', () => {
-    usersStore = usersStore.filter(item => {
-      if (item.id === socket.id) {
-        socket.broadcast.emit('LEAVE', item.userName)
-      }
-      return item.id !== socket.id;
-    })
+    usersStore = usersStore.filter(item => item.id !== socket.id);
+    io.emit('disconnect', usersStore);
   })
+  */
 });
 
 app.post('/', (req, res) => {
