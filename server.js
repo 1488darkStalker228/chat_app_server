@@ -26,25 +26,20 @@ app.use((req, res, next) => {
 io.on('connection', (socket) => {
   console.log('socket connected...', socket.id);
 
-  socket.on('chat-message', (data) => {
-    socket.broadcast.emit('chat-message', data);
-  });
+  socket.on('CHAT_MESSAGE', (data) => io.emit('CHAT_MESSAGE', data));
 
   socket.on('JOINED', (data) => {
     usersStore.push(data);
     io.emit('JOINED', usersStore);
   });
-  /*
+
   socket.on('disconnect', () => {
     usersStore = usersStore.filter(item => item.id !== socket.id);
-    io.emit('disconnect', usersStore);
-  })
-  */
+    io.emit('LEAVE', usersStore);
+  });
 });
 
-app.post('/', (req, res) => {
-  res.json();
-});
+app.post('/', (req, res) => res.json());
 
 server.listen(3000, (err) => {
   if (err) throw Error(err);
