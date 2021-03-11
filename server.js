@@ -23,20 +23,20 @@ app.use((req, res, next) => {
   next();
 }, express.json({limit: "50mb"}), cookerParser());
 
-app.post('/', (req, res) => res.json());
-
 io.on('connection', (socket) => {
   console.log('socket connected...', socket.id);
 
-  socket.on('CHAT_MESSAGE', (data) => io.emit('CHAT_MESSAGE', data));
+  socket.on('CHAT_MESSAGE', (data) => {
+    console.log();
+    io.emit('CHAT_MESSAGE', data)
+  });
 
   socket.on('JOINED', (data) => {
-    usersStore.push(data);
+    usersStore.push({id: socket.id, userName: data});
     io.emit('JOINED', usersStore);
   });
 
   socket.on('CHAT_IMAGE', (data) => {
-    console.log(data);
     io.emit('CHAT_IMAGE', data);
   });
 
@@ -50,3 +50,38 @@ server.listen(3000, (err) => {
   if (err) throw Error(err);
   console.log('Сервер запущен');
 });
+
+
+
+
+
+
+
+
+
+
+/* io.on('connection', (socket) => {
+  console.log('socket connected...', socket.id);
+
+  socket.on('CHAT_MESSAGE', (data) => io.emit('CHAT_MESSAGE', data));
+
+  socket.on('JOINED', (data) => {
+    usersStore.push({id: socket.id, userName: data});
+    console.log(usersStore);
+    io.emit('JOINED', usersStore);
+  });
+
+  socket.on('CHAT_IMAGE', (data) => {
+    io.emit('CHAT_IMAGE', data);
+  });
+
+  socket.on('disconnect', () => {
+    usersStore = usersStore.filter(item => item.id !== socket.id);
+    io.emit('LEAVE', usersStore);
+  });
+});
+
+server.listen(3000, (err) => {
+  if (err) throw Error(err);
+  console.log('Сервер запущен');
+}); */
