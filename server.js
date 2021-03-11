@@ -26,19 +26,14 @@ app.use((req, res, next) => {
 io.on('connection', (socket) => {
   console.log('socket connected...', socket.id);
 
-  socket.on('CHAT_MESSAGE', (data) => {
-    console.log();
-    io.emit('CHAT_MESSAGE', data)
-  });
-
   socket.on('JOINED', (data) => {
     usersStore.push({id: socket.id, userName: data});
     io.emit('JOINED', usersStore);
   });
 
-  socket.on('CHAT_IMAGE', (data) => {
-    io.emit('CHAT_IMAGE', data);
-  });
+  socket.on('CHAT_MESSAGE', (data) => io.emit('CHAT_MESSAGE', data));
+
+  socket.on('CHAT_IMAGE', (data) => io.emit('CHAT_IMAGE', data));
 
   socket.on('disconnect', () => {
     usersStore = usersStore.filter(item => item.id !== socket.id);
