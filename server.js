@@ -31,44 +31,11 @@ io.on('connection', (socket) => {
     io.emit('JOINED', usersStore);
   });
 
-  socket.on('CHAT_MESSAGE', (data) => io.emit('CHAT_MESSAGE', data));
+  socket.on('SEND_MESSAGE', (data) => io.emit('SEND_MESSAGE', data));
 
-  socket.on('CHAT_IMAGE', (data) => io.emit('CHAT_IMAGE', data));
+  socket.on('SEND_IMAGE', (data) => io.emit('SEND_IMAGE', data));
 
-  socket.on('disconnect', () => {
-    usersStore = usersStore.filter(item => item.id !== socket.id);
-    io.emit('LEAVE', usersStore);
-  });
-});
-
-server.listen(3000, (err) => {
-  if (err) throw Error(err);
-  console.log('Сервер запущен');
-});
-
-
-
-
-
-
-
-
-
-
-/* io.on('connection', (socket) => {
-  console.log('socket connected...', socket.id);
-
-  socket.on('CHAT_MESSAGE', (data) => io.emit('CHAT_MESSAGE', data));
-
-  socket.on('JOINED', (data) => {
-    usersStore.push({id: socket.id, userName: data});
-    console.log(usersStore);
-    io.emit('JOINED', usersStore);
-  });
-
-  socket.on('CHAT_IMAGE', (data) => {
-    io.emit('CHAT_IMAGE', data);
-  });
+  socket.on('SEND_STICKER', (data) => io.emit('SEND_STICKER', data));
 
   socket.on('disconnect', () => {
     usersStore = usersStore.filter(item => item.id !== socket.id);
@@ -79,4 +46,9 @@ server.listen(3000, (err) => {
 server.listen(3000, (err) => {
   if (err) throw Error(err);
   console.log('Сервер запущен');
-}); */
+});
+
+
+
+
+
