@@ -45,7 +45,7 @@ io.on('connection', (socket) => {
 
 server.listen(3000, (err) => {
   if (err) throw Error(err);
-  console.log('Сервер запущен');
+  console.log('Сервер запущен на порту 3000');
 });
 
 
